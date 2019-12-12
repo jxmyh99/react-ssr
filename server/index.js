@@ -5,7 +5,8 @@ import express from 'express'
 
 import { StaticRouter } from 'react-router-dom'
 import App from '../src/App'
-
+import store from '../src/store/store'
+import { Provider } from 'react-redux'
 const app = express()
 app.use(express.static('public'))
 
@@ -16,9 +17,12 @@ app.get('*', (req, res) => {
   // console.log(content)
   console.log(req.url)
   const content = renderToString(
-    <StaticRouter location={req.url || '/'}>
-      {App}
-    </StaticRouter>
+    <Provider store={store}>
+      <StaticRouter location={req.url || '/'}>
+        {App}
+      </StaticRouter>
+    </Provider>
+
   )
 
   res.send(`
