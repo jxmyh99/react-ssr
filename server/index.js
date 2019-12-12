@@ -1,23 +1,25 @@
-import React from "react";
-import { renderToString } from "react-dom/server";
+import React from 'react'
+import { renderToString } from 'react-dom/server'
 
 import express from 'express'
 
+import { StaticRouter } from 'react-router-dom'
+import App from '../src/App'
 
-import App from "../src/App";
-
-
-
-const app = express();
+const app = express()
 app.use(express.static('public'))
 
-app.get('/',(req,res)=>{
-  
-  // const Page = <App title="我是app"></App>
-  
+app.get('*', (req, res) => {
+  // const content = <App title='我是app' />
+
   // const content = renderToString(Page)
   // console.log(content)
-  const content = renderToString(App)
+  console.log(req.url)
+  const content = renderToString(
+    <StaticRouter location={req.url || '/'}>
+      {App}
+    </StaticRouter>
+  )
 
   res.send(`
     <html>
@@ -34,7 +36,6 @@ app.get('/',(req,res)=>{
   `)
 })
 
-
-app.listen('9093',()=>{
+app.listen('9093', () => {
   console.log('渲染成功')
 })
