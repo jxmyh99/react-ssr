@@ -4,7 +4,12 @@ import { getIndexList } from '../store/index'
 function Index (props) {
   const [count, setCount] = useState(1)
   useEffect(() => {
-    props.getIndexList()
+    console.log(props.list.length)
+    if (!props.list.length) {
+      // 客户端获取
+      // 这里是扩展的地方
+      props.getIndexList()
+    }
   }, [])
   return (
     <div>
@@ -15,17 +20,17 @@ function Index (props) {
       <hr />
 
       <ul>
-        {
-          props.list.map(item => {
-            return <li key={item.id}> {item.name} </li>
-          })
-        }
+        {props.list.map(item => {
+          return <li key={item.id}> {item.name} </li>
+        })}
       </ul>
     </div>
   )
 }
-
-export default connect(
-  state => ({ list: state.index.list }),
-  { getIndexList }
-)(Index)
+Index.loadData = store => {
+  // console.log(store)
+  return store.dispatch(getIndexList())
+}
+export default connect(state => ({ list: state.index.list }), { getIndexList })(
+  Index
+)
