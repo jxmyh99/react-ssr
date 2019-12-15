@@ -3,8 +3,8 @@
 // actionType
 import axiosIns from '../../utils/axiosInstance'
 
-const GET_LIST = 'INDEX/GET_LIST'
-// import axios from 'axios';
+const GET_LIST = 'INDEX/USER_INFO'
+
 // actionCreator
 const changeList = list => ({
   type: GET_LIST,
@@ -12,21 +12,21 @@ const changeList = list => ({
 })
 
 // get
-export const getIndexList = server => {
+export const getUserInfo = server => {
   return (dispatch, getState, axiosInstance) => {
-    return axiosIns.get('http://localhost:9090/api/course/list')
+    return axiosIns.get('http://localhost:9090/api/user/info')
       .then(res => {
-        const { list } = res.data
-        console.log(123, list)
+        const { data } = res.data
+        console.log('用户信息', data)
 
-        dispatch(changeList(list))
+        dispatch(changeList(data))
       })
   }
 }
 
 // 默认数据
 const defaultState = {
-  list: []
+  userinfo: []
 }
 
 export default (state = defaultState, action) => {
@@ -34,7 +34,7 @@ export default (state = defaultState, action) => {
     case GET_LIST:
       const newState = {
         ...state,
-        list: action.list
+        userinfo: action.list
       }
       return newState
 
