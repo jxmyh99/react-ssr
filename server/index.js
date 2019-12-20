@@ -3,19 +3,29 @@ import { renderToString } from 'react-dom/server'
 
 import express from 'express'
 
-import { StaticRouter, matchPath, Route } from 'react-router-dom'
+import { StaticRouter, matchPath, Route, Switch } from 'react-router-dom'
 import routes from '../src/App'
 import { getServerStore } from '../src/store/store'
 import { Provider } from 'react-redux'
-
+import proxy from 'http-proxy-middleware'
+// import axios from 'axios'
+// http-proxy-middleware
 import Header from '../src/component/Header'
 const app = express()
 app.use(express.static('public'))
 const store = getServerStore()
+// 第一点，注意这里的不是get是use
+app.use(
+  '/api',
+  proxy({ target: 'http://localhost:9090', changeOrigin: true })
+)
+
 app.get('*', (req, res) => {
   // 根据路由渲染出的组件 ， 并且 拿到loadData方法
   // const content = <App title='我是app' />
+  // if(req.url.startsWith('api/')){
 
+  // }
   // const content = renderToString(Page)
   // console.log(content)
   // console.log(req.url)
@@ -28,7 +38,10 @@ app.get('*', (req, res) => {
       const { loadData } = route.component
       // console.log(loadData)
       if (loadData) {
-        promises.push(loadData(store))
+        const promise = new Promise((resolve, reject) => {
+          loadData(store).then(resolve).catch(resolve)
+        })
+        promises.push(promise)
       }
     }
   })
@@ -42,21 +55,35 @@ app.get('*', (req, res) => {
   // console.log(promises[0].toString())
   // 等待所有promise请求完成后渲染
   // todo:作业 是在这里
-  properRace(promises).then(n => {
+  // properRace(promises).then(n => {
+  Promise.all(promises).then(n => {
     // console.log(n)
+    const context = {}
     const content = renderToString(
+
       <Provider store={store}>
-        <StaticRouter location={req.url || '/'}>
+        <StaticRouter location={req.url || '/'} context={context}>
           <Header />
-          {routes.map(route => {
-            console.log(route)
-            return <Route {...route} />
-          })}
+          <Switch>
+            {routes.map(route => {
+              // console.log(route)
+              return <Route {...route} />
+            })}
+          </Switch>
+
         </StaticRouter>
       </Provider>
 
     )
-
+    console.log('context', context)
+    // 通过statuscdoe返回状态码
+    if (context.statusCode) {
+      res.status(context.statusCode)
+    }
+    // 页面替换
+    if (context.action === 'REPLACE') {
+      res.redirect(301, context.url)
+    }
     res.send(`
       <html>
         <head>

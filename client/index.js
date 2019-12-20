@@ -2,7 +2,7 @@ import React from 'react'
 
 import ReactDom from 'react-dom'
 
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import routes from '../src/App'
 import { getClientStore } from '../src/store/store'
 import { Provider } from 'react-redux'
@@ -12,7 +12,10 @@ const Page = (
   <Provider store={store}>
     <BrowserRouter>
       <Header />
-      {routes.map(route => <Route {...route} />)}
+      <Switch>
+        {routes.map(route => <Route {...route} />)}
+      </Switch>
+
     </BrowserRouter>
   </Provider>
 

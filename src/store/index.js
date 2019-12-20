@@ -1,10 +1,10 @@
 // 首页的
 
 // actionType
-import axiosIns from '../../utils/axiosInstance'
+// import axiosIns from '../../utils/axiosInstance'
+// import axios from 'axios'
 
 const GET_LIST = 'INDEX/GET_LIST'
-// import axios from 'axios';
 // actionCreator
 const changeList = list => ({
   type: GET_LIST,
@@ -13,13 +13,16 @@ const changeList = list => ({
 
 // get
 export const getIndexList = server => {
-  return (dispatch, getState, axiosInstance) => {
-    return axiosIns.get('http://localhost:9090/api/course/list')
+  return (dispatch, getState, $axios) => {
+    return $axios.get('/api/course/list')
       .then(res => {
         const { list } = res.data
         console.log(123, list)
 
         dispatch(changeList(list))
+      })
+      .catch(err => {
+        console.info(err)
       })
   }
 }

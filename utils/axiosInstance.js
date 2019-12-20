@@ -1,8 +1,9 @@
 import axios from 'axios'
 
 export default axios.create({
-  proxy: {
-    host: '127.0.0.1',
-    port: 9090
-  }
+  baseURL: 'localhost:9090'
+  // proxy: {
+  //   host: '127.0.0.1',
+  //   port: 9090
+  // }
 })
