@@ -1,8 +1,8 @@
 // 首页的
 
 // actionType
-import axiosIns from '../../utils/axiosInstance'
-
+// import axiosIns from '../../utils/axiosInstance'
+// import axios from 'axios'
 const GET_LIST = 'INDEX/USER_INFO'
 
 // actionCreator
@@ -13,8 +13,8 @@ const changeList = list => ({
 
 // get
 export const getUserInfo = server => {
-  return (dispatch, getState, axiosInstance) => {
-    return axiosIns.get('http://localhost:9090/api/user/info')
+  return (dispatch, getState, $axios) => {
+    return $axios.get('/api/user/info')
       .then(res => {
         const { data } = res.data
         console.log('用户信息', data)

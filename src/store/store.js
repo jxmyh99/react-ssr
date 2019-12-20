@@ -3,7 +3,7 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 
 import thunk from 'redux-thunk'
-
+import axios from 'axios'
 import indexReducer from './index'
 import userReducer from './user'
 
@@ -12,6 +12,12 @@ const reducer = combineReducers({
   user: userReducer
 })
 
+const serverAxios = axios.create({
+  baseURL: 'http://localhost:9090/'
+})
+const clientAxios = axios.create({
+  baseURL: '/'
+})
 // 创建 store
 
 // const store = createStore(reducer, applyMiddleware(thunk))
@@ -20,7 +26,7 @@ const reducer = combineReducers({
 
 export const getServerStore = () => {
   // 服务端
-  return createStore(reducer, applyMiddleware(thunk))
+  return createStore(reducer, applyMiddleware(thunk.withExtraArgument(serverAxios)))
 }
 
 export const getClientStore = () => {
@@ -28,5 +34,5 @@ export const getClientStore = () => {
 
   const defaultStore = window.__context ? window.__context : {}
 
-  return createStore(reducer, defaultStore, applyMiddleware(thunk))
+  return createStore(reducer, defaultStore, applyMiddleware(thunk.withExtraArgument(clientAxios)))
 }

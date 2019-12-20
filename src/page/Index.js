@@ -4,7 +4,7 @@ import { getIndexList } from '../store/index'
 function Index (props) {
   const [count, setCount] = useState(1)
   useEffect(() => {
-    console.log(props.list.length)
+    console.log(props)
     if (!props.list.length) {
       // 客户端获取
       // 这里是扩展的地方

@@ -1,25 +1,29 @@
-var Path = require('path');
+var Path = require('path')
 
 // const nodeExternals = require("webpack-node-externals")
 
 module.exports = {
   // target:"node",
-  mode:"development",
-  entry:"./client/index.js",
+  mode: 'development',
+  entry: './client/index.js',
   // externals:[nodeExternals()],
-  output:{
-    filename:'bundle.js',
-    path:Path.resolve(__dirname,'public')
+  output: {
+    filename: 'bundle.js',
+    path: Path.resolve(__dirname, 'public')
   },
-  module:{
-    rules:[
+  module: {
+    rules: [
       {
-        test:/\.js$/,
-        loader:'babel-loader',
-        exclude:/node_modules/,
-        options:{
-          presets:['@babel/preset-react',['@babel/preset-env']]
+        test: /\.js$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/,
+        options: {
+          presets: ['@babel/preset-react', ['@babel/preset-env']]
         }
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
       }
     ]
   }
