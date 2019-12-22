@@ -191,3 +191,4 @@ import { StaticRouter, matchPath, Route, Switch } from 'react-router-dom'
 
 问题
 1.如何`client`解决`js`文件缓存的问题
+2.server 里的 模板改为index.crs.htl

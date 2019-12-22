@@ -1,7 +1,8 @@
 var Path = require('path')
 
+const HtmlWebpackPlugi = require('html-webpack-plugin')
 // const nodeExternals = require("webpack-node-externals")
-
+const cssloader = require('./utils/cssloader')
 module.exports = {
   // target:"node",
   mode: 'development',
@@ -11,6 +12,12 @@ module.exports = {
     filename: 'bundle.js',
     path: Path.resolve(__dirname, 'public')
   },
+  plugins: [
+    new HtmlWebpackPlugi({
+      filename: 'index.csr.html',
+      template: 'src/index.csr.html',
+      inject: true
+    })],
   module: {
     rules: [
       {
@@ -23,7 +30,12 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', {
+          loader: 'css-loader',
+          options: {
+            modules: true
+          }
+        }]
       }
     ]
   }

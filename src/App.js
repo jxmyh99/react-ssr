@@ -6,7 +6,7 @@ import User from './page/User'
 import NotFound from './page/NotFound'
 import Member from './page/Member'
 import Login from './page/Login'
-import './App.css'
+// import './App.css'
 // export default (
 //   <div>
 //     <Route path='/' exact component={Index} />
@@ -46,6 +46,7 @@ export default [
     key: 'login'
   },
   {
-    component: NotFound
+    component: NotFound,
+    key: 'notfound'
   }
 ]
