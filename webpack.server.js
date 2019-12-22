@@ -1,6 +1,7 @@
 var Path = require('path')
 // 去除多余的node_modules的代码
 const nodeExternals = require('webpack-node-externals')
+const cssloader = require('./utils/cssloader')
 // isomorphic-style-loader 同构css代码
 module.exports = {
   target: 'node',
@@ -23,7 +24,12 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['isomorphic-style-loader', 'css-loader']
+        use: ['isomorphic-style-loader', {
+          loader: 'css-loader',
+          options: {
+            modules: true
+          }
+        }]
       }
     ]
   }

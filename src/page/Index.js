@@ -1,10 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { getIndexList } from '../store/index'
+import styles from './Index.css'
+import withStyle from '../../withStyle'
 function Index (props) {
+  // const cssStr = ''
+  // console.log('props', props.staticContext)
+  // console.log('object', styles.toString())
+  // if (props.staticContext) {
+  //   if (!styles._getCss) {
+  //     cssStr = styles.toString()
+  //   } else {
+  //     cssStr = styles._getCss()
+  //   }
+
+  //   props.staticContext.css.push(cssStr)
+  // //   props.staticContext.css.push(typeof styles._getCss === 'function' || styles._getCss())
+  // }
   const [count, setCount] = useState(1)
   useEffect(() => {
-    console.log(props)
+    // console.log(props)
     if (!props.list.length) {
       // 客户端获取
       // 这里是扩展的地方
@@ -13,8 +28,8 @@ function Index (props) {
   }, [])
   return (
     <div>
-      <h1>hello {props.title}</h1>
-      <p>当前的数 {count}</p>
+      <h1 className={styles.locals ? styles.locals.h1 : styles.h1}>hello {props.title}</h1>
+      <p className={styles.locals ? styles.locals.p : styles.p}>当前的数 {count}</p>
       <button onClick={() => setCount(count + 1)}>点击</button>
 
       <hr />
@@ -32,5 +47,5 @@ Index.loadData = store => {
   return store.dispatch(getIndexList())
 }
 export default connect(state => ({ list: state.index.list }), { getIndexList })(
-  Index
+  withStyle(Index, styles)
 )
